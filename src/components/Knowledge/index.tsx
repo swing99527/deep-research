@@ -198,7 +198,7 @@ function Knowledge({ open, onClose }: KnowledgeProps) {
                                 className="w-4 h-4 mr-1"
                                 type={item.type}
                               />{" "}
-                              <span className="truncate w-80 max-lg:w-52 max-sm:w-40 cursor-pointer hover:text-blue-500">
+                              <span className="truncate w-80 max-lg:w-52 max-sm:w-40 cursor-pointer hover:text-primary">
                                 {item.title}
                               </span>
                             </p>

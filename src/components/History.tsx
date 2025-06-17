@@ -208,7 +208,7 @@ function History({ open, onClose }: HistoryProps) {
                     <TableRow key={item.id}>
                       <TableCell>
                         <p
-                          className="truncate w-96 max-lg:max-w-72 max-sm:max-w-52 cursor-pointer hover:text-blue-500"
+                          className="truncate w-96 max-lg:max-w-72 max-sm:max-w-52 cursor-pointer hover:text-primary"
                           title={item.title}
                           onClick={() => loadHistory(item.id)}
                         >

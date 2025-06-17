@@ -8,11 +8,11 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const HEAD_SCRIPTS = process.env.HEAD_SCRIPTS as string;
-const APP_NAME = "Deep Research";
-const APP_DEFAULT_TITLE = "Deep Research";
-const APP_TITLE_TEMPLATE = "%s - PWA App";
+const APP_NAME = "LINGBRAIN 灵思深度研究";
+const APP_DEFAULT_TITLE = "LINGBRAIN 深度研究";
+const APP_TITLE_TEMPLATE = "%s - LINGBRAIN 深度研究";
 const APP_DESCRIPTION =
-  "Use any LLMs (Large Language Models) for Deep Research.";
+  "LINGBRAIN 灵思 - AI驱动的智能研究平台，助力深度研究与分析。";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -21,10 +21,18 @@ export const metadata: Metadata = {
     template: APP_TITLE_TEMPLATE,
   },
   icons: {
-    icon: {
-      type: "image/svg+xml",
-      url: "./logo.svg",
-    },
+    icon: [
+      {
+        type: "image/png",
+        url: "./logo.png",
+      },
+    ],
+    apple: [
+      {
+        type: "image/png",
+        url: "./logo.png",
+      },
+    ],
   },
   description: APP_DESCRIPTION,
   appleWebApp: {

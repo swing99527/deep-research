@@ -24,11 +24,11 @@
 
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 220 14.3% 95.9%;
 
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 220 8.9% 46.1%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 220 14.3% 95.9%;
 
     --accent-foreground: 222.2 47.4% 11.2%;
 
@@ -36,23 +36,29 @@
 
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
+    --border: 220 13% 91%;
 
-    --input: 214.3 31.8% 91.4%;
+    --input: 220 13% 91%;
 
     --ring: 222.2 84% 4.9%;
 
-    --chart-1: 12 76% 61%;
+    --chart-1: 220 70% 50%;
 
-    --chart-2: 173 58% 39%;
+    --chart-2: 160 60% 45%;
 
-    --chart-3: 197 37% 24%;
+    --chart-3: 30 80% 55%;
 
-    --chart-4: 43 74% 66%;
+    --chart-4: 280 65% 60%;
 
-    --chart-5: 27 87% 67%;
+    --chart-5: 340 75% 55%;
 
     --radius: 0.5rem;
+    
+    /* 简化设计变量 */
+    --gradient-subtle: linear-gradient(135deg, hsl(220 14.3% 95.9%) 0%, hsl(220 13% 91%) 100%);
+    --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.04);
+    --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.07);
+    --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.08);
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -102,6 +108,12 @@
     --chart-4: 280 65% 60%;
 
     --chart-5: 340 75% 55%;
+    
+    /* 暗色模式简化变量 */
+    --gradient-subtle: linear-gradient(135deg, hsl(217.2 32.6% 17.5%) 0%, hsl(215 25% 20%) 100%);
+    --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+    --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+    --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.5);
   }
 }
 
@@ -110,16 +122,22 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv03", "cv04", "cv11";
+  }
+  
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @page {
   size: "A4";
+  margin: 2cm;
 }
 
 .float-menu-button {
-  @apply w-8 h-8 hover:bg-transparent text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-slate-50;
+  @apply w-10 h-10 bg-primary/15 hover:bg-primary/25 text-primary hover:text-primary dark:text-primary dark:hover:text-primary border border-primary/30 hover:border-primary/60 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 backdrop-blur-sm;
 }
 
 .hidden-empty-p p:empty {
@@ -144,4 +162,273 @@
   box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* 现代化组件样式 */
+@layer components {
+  /* 卡片组件增强 */
+  .card-modern {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-medium)] transition-all duration-300;
+  }
+  
+  .card-research {
+    @apply card-modern p-6 hover:border-primary/20 hover:shadow-[0_8px_32px_0_hsl(var(--primary)_/_0.1)];
+  }
+  
+  /* 渐变背景 */
+  .bg-gradient-main {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+  }
+  
+  .bg-gradient-card {
+    background: var(--gradient-subtle);
+  }
+  
+  /* 现代化按钮样式 */
+  .btn-primary-gradient {
+    @apply bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105;
+  }
+  
+  .btn-red-accent {
+    background: var(--gradient-subtle);
+    color: hsl(var(--accent-foreground));
+    box-shadow: var(--shadow-large);
+    @apply hover:scale-105 transition-all duration-200;
+  }
+  
+  .btn-ghost-modern {
+    @apply hover:bg-accent/50 hover:backdrop-blur-sm transition-all duration-200;
+  }
+  
+  /* 浮动元素样式 */
+  .float-menu-button {
+    @apply w-10 h-10 hover:bg-accent/80 hover:backdrop-blur-sm text-muted-foreground hover:text-foreground rounded-lg transition-all duration-200 hover:scale-105;
+  }
+  
+  /* 输入框现代化 */
+  .input-modern {
+    @apply bg-background/50 backdrop-blur-sm border-border/50 focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all duration-200;
+  }
+  
+  /* 状态指示器 */
+  .status-indicator {
+    @apply w-3 h-3 rounded-full animate-pulse;
+  }
+  
+  .status-success {
+    @apply bg-green-500 shadow-[0_0_8px_hsl(142_76%_36%_/_0.5)];
+  }
+  
+  .status-processing {
+    background: hsl(var(--accent-foreground));
+    box-shadow: var(--shadow-large);
+  }
+  
+  .status-warning {
+    @apply bg-yellow-500 shadow-[0_0_8px_hsl(45_93%_47%_/_0.5)];
+  }
+  
+  .status-error {
+    @apply bg-red-500 shadow-[0_0_8px_hsl(0_84%_60%_/_0.5)];
+  }
+}
+
+/* 现代化动画 */
+@layer utilities {
+  /* 淡入动画 */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out forwards;
+  }
+  
+  /* 悬浮动画 */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  /* 脉冲增强 */
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  /* 文本渐变 */
+  .text-gradient {
+    @apply bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent;
+  }
+  
+  /* 玻璃效果 */
+  .glass-effect {
+    @apply bg-background/80 backdrop-blur-md border border-border/50;
+  }
+  
+  /* 发光边框 */
+  .glow-border {
+    @apply border border-primary/30 shadow-[0_0_20px_hsl(var(--primary)_/_0.1)];
+  }
+  
+  /* 红色强调元素 */
+  .accent-red {
+    background: hsl(var(--accent-foreground));
+    color: hsl(var(--accent-foreground));
+  }
+  
+  .accent-red-light {
+    background: hsl(var(--accent-foreground));
+    color: hsl(var(--accent-foreground));
+  }
+  
+  .border-red-accent {
+    border-color: hsl(var(--accent-foreground));
+  }
+  
+  .text-red-accent {
+    color: hsl(var(--accent-foreground));
+  }
+  
+  .shadow-red-accent {
+    box-shadow: var(--shadow-large);
+  }
+  
+  /* 隐藏空段落 */
+  .hidden-empty-p p:empty {
+    @apply hidden;
+  }
+  
+  /* 表单布局 */
+  .from-item {
+    @apply grid grid-cols-4 gap-4 max-sm:gap-2 space-y-0 items-center lg:grid-cols-6;
+  }
+  
+  .from-label {
+    @apply col-span-1 lg:col-span-2 lg:pl-1 overflow-hidden font-medium text-sm text-muted-foreground;
+  }
+  
+  .form-field {
+    @apply col-span-3 lg:col-span-4;
+  }
+  
+  /* 文本截断 */
+  .text-line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .text-line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* 关键帧动画定义 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px hsl(var(--primary) / 0.2);
+  }
+  to {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
+  }
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .container {
+    @apply px-4;
+  }
+  
+  .card-research {
+    @apply p-4;
+  }
+}
+
+/* 性能优化 */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* 减动效支持 */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-scale-in,
+  .animate-float,
+  .animate-glow,
+  .animate-pulse-slow {
+    animation: none;
+  }
+  
+  .transition-all,
+  .transition-colors,
+  .transition-shadow,
+  .transition-transform {
+    transition: none;
+  }
 }

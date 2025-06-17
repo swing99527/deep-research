@@ -45,7 +45,7 @@ function ResourceList({ className, resources, onRemove }: Props) {
                 type={resource.type}
               />
               {resource.status === "processing" ? (
-                <Loader2 className="absolute top-1/2 left-1/2 -ml-3 -mt-3 h-6 w-6 animate-spin text-blue-600" />
+                <Loader2 className="absolute top-1/2 left-1/2 -ml-3 -mt-3 h-6 w-6 animate-spin text-primary" />
               ) : null}
             </div>
             <div className="flex h-14 w-3/4 flex-auto text-sm">

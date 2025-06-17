@@ -3341,21 +3341,10 @@ function Setting({ open, onClose }: SettingProps) {
                     </Button>
                   </div>
                 ) : null}
-                <div className="from-item">
+                                <div className="from-item">
                   <Label className="from-label">{t("setting.version")}</Label>
                   <div className="form-field text-center leading-9">
                     {`v${VERSION}`}
-                    <small className="ml-1">
-                      (
-                      <a
-                        className="hover:underline hover:underline-offset-4 hover:text-blue-500"
-                        href="https://github.com/u14app/deep-research"
-                        target="_blank"
-                      >
-                        {t("setting.checkForUpdate")}
-                      </a>
-                      )
-                    </small>
                   </div>
                 </div>
                 <div className="from-item">

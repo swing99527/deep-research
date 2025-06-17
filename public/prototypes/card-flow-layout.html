@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research - 卡片流式布局原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .floating-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .floating-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .draggable-handle {
+            cursor: grab;
+        }
+        .draggable-handle:active {
+            cursor: grabbing;
+        }
+        .sortable-ghost {
+            opacity: 0.3;
+        }
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen">
+    <!-- 浮动导航栏 -->
+    <nav class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 glass-card rounded-2xl px-6 py-3 shadow-lg">
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                </div>
+                <span class="font-bold text-gray-800">Deep Research</span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-sm">
+                <a href="index.html" class="flex items-center gap-2 px-3 py-2 bg-white/50 rounded-lg hover:bg-white/70 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    返回
+                </a>
+                <button class="flex items-center gap-2 px-3 py-2 bg-white/50 rounded-lg hover:bg-white/70 transition-colors">
+                    <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                    布局
+                </button>
+                <button class="flex items-center gap-2 px-3 py-2 bg-white/50 rounded-lg hover:bg-white/70 transition-colors">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    保存
+                </button>
+                <button class="flex items-center gap-2 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    新增卡片
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <div class="pt-24 px-6 pb-6">
+        <!-- 研究标题卡片 -->
+        <div class="max-w-4xl mx-auto mb-8">
+            <div class="glass-card floating-card rounded-2xl p-6 shadow-lg">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="target" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <input type="text" value="人工智能在医疗领域的应用前景与挑战研究" 
+                               class="text-2xl font-bold text-gray-800 bg-transparent border-none outline-none w-full mb-2"
+                               placeholder="输入研究主题...">
+                        <p class="text-gray-600 mb-4">探索AI技术在现代医疗体系中的创新应用，分析其发展机遇与面临的挑战</p>
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm text-gray-500">状态: 进行中</span>
+                            <span class="text-sm text-gray-500">深度: 详细分析</span>
+                            <span class="text-sm text-gray-500">预计完成: 15分钟</span>
+                        </div>
+                    </div>
+                    <button class="p-2 hover:bg-white/50 rounded-lg transition-colors draggable-handle">
+                        <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 可拖拽卡片网格 -->
+        <div id="card-container" class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                
+                <!-- 搜索配置卡片 -->
+                <div class="glass-card floating-card rounded-2xl p-6 shadow-lg card-item">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                                <i data-lucide="search" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800">搜索配置</h3>
+                        </div>
+                        <button class="p-1 hover:bg-white/50 rounded draggable-handle">
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-6 h-6 bg-green-500 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="globe" class="w-3 h-3 text-white"></i>
+                                </div>
+                                <span class="text-sm font-medium">Google Scholar</span>
+                            </div>
+                            <div class="w-8 h-5 bg-green-500 rounded-full relative">
+                                <div class="w-3 h-3 bg-white rounded-full absolute right-1 top-1"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="book" class="w-3 h-3 text-white"></i>
+                                </div>
+                                <span class="text-sm font-medium">PubMed</span>
+                            </div>
+                            <div class="w-8 h-5 bg-blue-500 rounded-full relative">
+                                <div class="w-3 h-3 bg-white rounded-full absolute right-1 top-1"></div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full p-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-gray-400 hover:bg-gray-50 transition-colors">
+                            <i data-lucide="plus" class="w-4 h-4 mx-auto mb-1"></i>
+                            <span class="text-sm">添加搜索源</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 进度监控卡片 -->
+                <div class="glass-card floating-card rounded-2xl p-6 shadow-lg card-item">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center">
+                                <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800">研究进度</h3>
+                        </div>
+                        <button class="p-1 hover:bg-white/50 rounded draggable-handle">
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="relative w-24 h-24">
+                            <svg class="w-24 h-24 progress-ring">
+                                <circle cx="48" cy="48" r="40" stroke="#e5e7eb" stroke-width="8" fill="none"/>
+                                <circle cx="48" cy="48" r="40" stroke="#3b82f6" stroke-width="8" fill="none"
+                                        stroke-dasharray="251.2" stroke-dashoffset="75.36" stroke-linecap="round"/>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-2xl font-bold text-gray-800">70%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">资源收集</span>
+                            <span class="font-medium text-green-600">完成</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">内容分析</span>
+                            <span class="font-medium text-blue-600">进行中</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">报告生成</span>
+                            <span class="font-medium text-gray-400">等待中</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI 模型状态卡片 -->
+                <div class="glass-card floating-card rounded-2xl p-6 shadow-lg card-item">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                                <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800">AI 模型</h3>
+                        </div>
+                        <button class="p-1 hover:bg-white/50 rounded draggable-handle">
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span class="font-medium text-gray-800">Claude 3.5 Sonnet</span>
+                            </div>
+                            <div class="text-sm text-gray-600 mb-3">正在分析文献内容...</div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full transition-all duration-300" style="width: 68%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">1.2s</div>
+                                <div class="text-gray-600">响应时间</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-indigo-600">85%</div>
+                                <div class="text-gray-600">使用率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 资源统计卡片 -->
+                <div class="glass-card floating-card rounded-2xl p-6 shadow-lg card-item">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                                <i data-lucide="database" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800">资源统计</h3>
+                        </div>
+                        <button class="p-1 hover:bg-white/50 rounded draggable-handle">
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center p-3 bg-blue-50 rounded-xl">
+                            <div class="text-3xl font-bold text-blue-600 mb-1">127</div>
+                            <div class="text-sm text-gray-600">文献资料</div>
+                        </div>
+                        <div class="text-center p-3 bg-green-50 rounded-xl">
+                            <div class="text-3xl font-bold text-green-600 mb-1">43</div>
+                            <div class="text-sm text-gray-600">核心资源</div>
+                        </div>
+                        <div class="text-center p-3 bg-purple-50 rounded-xl">
+                            <div class="text-3xl font-bold text-purple-600 mb-1">15k</div>
+                            <div class="text-sm text-gray-600">总字数</div>
+                        </div>
+                        <div class="text-center p-3 bg-orange-50 rounded-xl">
+                            <div class="text-3xl font-bold text-orange-600 mb-1">92%</div>
+                            <div class="text-sm text-gray-600">可靠性</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 实时发现卡片 -->
+                <div class="glass-card floating-card rounded-2xl p-6 shadow-lg card-item">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                                <i data-lucide="lightbulb" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800">关键发现</h3>
+                        </div>
+                        <button class="p-1 hover:bg-white/50 rounded draggable-handle">
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                            <p class="text-sm font-medium text-gray-800 mb-1">技术突破</p>
+                            <p class="text-sm text-gray-600">深度学习在医学影像诊断准确率达到95%</p>
+                        </div>
+                        <div class="p-3 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                            <p class="text-sm font-medium text-gray-800 mb-1">市场采用</p>
+                            <p class="text-sm text-gray-600">60%的顶级医院已部署AI辅助系统</p>
+                        </div>
+                        <div class="p-3 bg-purple-50 border-l-4 border-purple-500 rounded-r-lg">
+                            <p class="text-sm font-medium text-gray-800 mb-1">发展趋势</p>
+                            <p class="text-sm text-gray-600">个性化精准医疗成为重点方向</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 最新资源卡片 -->
+                <div class="glass-card floating-card rounded-2xl p-6 shadow-lg card-item">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-green-500 rounded-xl flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800">最新资源</h3>
+                        </div>
+                        <button class="p-1 hover:bg-white/50 rounded draggable-handle">
+                            <i data-lucide="grip-vertical" class="w-4 h-4 text-gray-400"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-3 max-h-64 overflow-y-auto">
+                        <div class="p-3 bg-white/70 rounded-lg border border-white/30">
+                            <h5 class="font-medium text-gray-800 text-sm mb-1">AI在放射学中的最新应用</h5>
+                            <p class="text-xs text-gray-600 mb-2">Nature Medicine • 2024</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">高相关度</span>
+                                <button class="text-xs text-blue-600 hover:text-blue-800">查看</button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-white/70 rounded-lg border border-white/30">
+                            <h5 class="font-medium text-gray-800 text-sm mb-1">机器学习诊断算法优化</h5>
+                            <p class="text-xs text-gray-600 mb-2">IEEE Trans • 2024</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">中相关度</span>
+                                <button class="text-xs text-blue-600 hover:text-blue-800">查看</button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-white/70 rounded-lg border border-white/30">
+                            <h5 class="font-medium text-gray-800 text-sm mb-1">医疗AI伦理与法规研究</h5>
+                            <p class="text-xs text-gray-600 mb-2">Medical Ethics • 2024</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">待评估</span>
+                                <button class="text-xs text-blue-600 hover:text-blue-800">查看</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 浮动操作按钮 -->
+        <div class="fixed bottom-6 right-6 flex flex-col gap-3">
+            <button class="w-14 h-14 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-300 flex items-center justify-center">
+                <i data-lucide="download" class="w-6 h-6"></i>
+            </button>
+            <button class="w-14 h-14 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 hover:scale-110 transition-all duration-300 flex items-center justify-center">
+                <i data-lucide="share" class="w-6 h-6"></i>
+            </button>
+            <button class="w-14 h-14 bg-purple-500 text-white rounded-full shadow-lg hover:bg-purple-600 hover:scale-110 transition-all duration-300 flex items-center justify-center">
+                <i data-lucide="settings" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 初始化图标
+        lucide.createIcons();
+
+        // 初始化拖拽排序
+        const cardContainer = document.querySelector('#card-container .grid');
+        new Sortable(cardContainer, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            handle: '.draggable-handle',
+            onUpdate: function (evt) {
+                console.log('卡片顺序已更新');
+            }
+        });
+
+        // 模拟实时数据更新
+        setInterval(() => {
+            // 更新进度条
+            const progressCircle = document.querySelector('[stroke-dashoffset]');
+            const progressText = document.querySelector('.text-2xl.font-bold.text-gray-800');
+            if (progressCircle && progressText) {
+                const currentProgress = parseInt(progressText.textContent);
+                if (currentProgress < 100) {
+                    const newProgress = Math.min(currentProgress + 1, 100);
+                    progressText.textContent = newProgress + '%';
+                    const offset = 251.2 - (251.2 * newProgress / 100);
+                    progressCircle.setAttribute('stroke-dashoffset', offset);
+                }
+            }
+
+            // 更新统计数字
+            const stats = document.querySelectorAll('.text-3xl.font-bold');
+            stats.forEach(stat => {
+                if (Math.random() > 0.8) {
+                    const current = parseInt(stat.textContent);
+                    if (!isNaN(current) && current < 200) {
+                        stat.textContent = current + 1;
+                    }
+                }
+            });
+        }, 3000);
+
+        // 卡片拖拽效果增强
+        document.querySelectorAll('.card-item').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html> 
