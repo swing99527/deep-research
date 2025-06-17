@@ -1,13 +1,11 @@
 import React from 'react';
 import { 
   CheckIcon, 
-  ArrowRightIcon, 
   HistoryIcon, 
   BookTextIcon, 
   PlusSquareIcon,
   TargetIcon,
   SearchIcon,
-  ActivityIcon,
   FileTextIcon,
   ClockIcon,
   TrendingUpIcon,

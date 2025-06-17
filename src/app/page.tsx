@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useLayoutEffect, useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 import { useTheme } from "next-themes";
 import { useGlobalStore } from "@/store/global";

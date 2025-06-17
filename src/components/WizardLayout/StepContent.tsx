@@ -4,7 +4,6 @@ import {
   ArrowLeftIcon, 
   ArrowRightIcon,
   TargetIcon,
-  ActivityIcon,
   FileTextIcon,
   CheckCircleIcon,
   SparklesIcon,
@@ -196,7 +195,7 @@ const StepContent: React.FC<StepContentProps> = ({
           <div className="flex items-center gap-4">
             {/* 步骤指示器 */}
             <div className="flex items-center gap-2">
-              {['topic', 'feedback', 'search', 'report'].map((step, index) => {
+              {['topic', 'feedback', 'search', 'report'].map((step) => {
                 const isActive = step === currentStep;
                 const stepOrder = ['topic', 'feedback', 'search', 'report'];
                 const currentIndex = stepOrder.indexOf(currentStep);
