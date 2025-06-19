@@ -245,7 +245,7 @@ function Topic() {
                 选填
               </span>
             </FormLabel>
-            <FormControl onSubmit={(ev) => ev.stopPropagation()}>
+            <FormControl>
               <div className="space-y-4">
                 {/* 已添加的资源 */}
                 {taskStore.resources.length > 0 && (
@@ -260,34 +260,44 @@ function Topic() {
                 {/* 添加资源按钮 */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button 
-                      type="button"
-                      variant="outline" 
-                      className="w-full justify-start gap-3 h-12 text-muted-foreground hover:text-foreground border-dashed border-2 hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
-                    >
+                    <div className="w-full flex items-center justify-start gap-3 h-12 px-3 text-muted-foreground hover:text-foreground border-dashed border-2 border-border hover:border-primary/30 hover:bg-primary/5 rounded-lg cursor-pointer transition-all duration-200">
                       <FilePlus className="w-5 h-5" />
                       <span className="font-medium">{t("knowledge.addResource")}</span>
                       <ArrowRight className="w-4 h-4 ml-auto opacity-50" />
-                    </Button>
+                    </div>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56 glass-effect">
+                  <DropdownMenuContent 
+                    className="w-56"
+                    align="start"
+                    side="bottom"
+                    sideOffset={8}
+                  >
                     <DropdownMenuItem 
-                      onClick={() => openKnowledgeList()}
-                      className="gap-3 py-3"
+                      onClick={() => {
+                        if (handleCheck()) {
+                          openKnowledgeList();
+                        }
+                      }}
                     >
                       <BookText className="w-4 h-4" />
                       <span>{t("knowledge.knowledge")}</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => handleCheck() && fileInputRef.current?.click()}
-                      className="gap-3 py-3"
+                      onClick={() => {
+                        if (handleCheck()) {
+                          fileInputRef.current?.click();
+                        }
+                      }}
                     >
                       <Paperclip className="w-4 h-4" />
                       <span>{t("knowledge.localFile")}</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => handleCheck() && setOpenCrawler(true)}
-                      className="gap-3 py-3"
+                      onClick={() => {
+                        if (handleCheck()) {
+                          setOpenCrawler(true);
+                        }
+                      }}
                     >
                       <Link className="w-4 h-4" />
                       <span>{t("knowledge.webPage")}</span>
