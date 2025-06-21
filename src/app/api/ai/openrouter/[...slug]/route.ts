@@ -3,14 +3,10 @@ import { OPENROUTER_BASE_URL } from "@/constants/urls";
 
 export const runtime = "edge";
 export const preferredRegion = [
-  "cle1",
-  "iad1",
-  "pdx1",
-  "sfo1",
-  "sin1",
-  "syd1",
-  "hnd1",
-  "kix1",
+  "sin1",  // 🇸🇬 新加坡
+  "hnd1",  // 🇯🇵 日本东京
+  "kix1",  // 🇯🇵 日本大阪
+  "hkg1",  // 🇭🇰 香港
 ];
 
 const API_PROXY_BASE_URL =
